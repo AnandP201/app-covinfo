@@ -5,6 +5,8 @@ import Loader from "../utils/Loader";
 import { useProfile } from "../../context/profile.context";
 import CountryItem from "../CountryItem";
 import CountryInfoItem from "../CountryInfoItem";
+import lookup from "country-code-lookup";
+import Flag from "react-country-flag";
 
 const Country = () => {
   const trackRef = useRef(null);
@@ -27,17 +29,22 @@ const Country = () => {
     switch (c) {
       case "UK":
         return "United Kingdom";
-      case "UAE":
-        return "United Arab Emirates";
+      case "USA":
+        return "United States";
       case "Syria":
         return "Sy";
       case "Russia":
-        return "Ru";
+        return "RS";
       case "S. Korea":
-        return "Kor";
+        return "KR";
       default:
         return c;
     }
+  }
+
+  function toImg(name) {
+    const c = lookup.byCountry(render(name));
+    return c === null ? null : c.internet;
   }
 
   function renderRatio(obj) {
@@ -161,17 +168,15 @@ const Country = () => {
                     padding: "0.4em",
                   }}
                 >
-                  <img
-                    src={`https://countryflagsapi.com/svg/${render(
-                      data[index.count].country_name
-                    )}`}
+                  <Flag
+                    countryCode={toImg(render(data[index.count].country_name))}
                     style={{
-                      boxShadow: "1px 1px 1px #000",
-                      fontSize: "0.6em",
+                      display: "flex",
+                      justifyContent: "center",
+                      width: `${isPhone ? "10px" : "20px"}`,
+                      height: `${isPhone ? "20px" : "30px"}`,
                     }}
-                    height={isPhone ? 20 : 25}
-                    width={isPhone ? 30 : 40}
-                    alt={`${data[index.count].country_name}'s flag`}
+                    svg
                   />
                   &nbsp;{" "}
                   <span

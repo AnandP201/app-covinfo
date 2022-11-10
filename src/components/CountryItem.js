@@ -1,37 +1,58 @@
 import React from "react";
+import lookup from "country-code-lookup";
+import Flag from "react-country-flag";
 
 const CountryItem = ({ item }) => {
   function render(c) {
     switch (c) {
+      case "USA":
+        return "United States";
       case "UK":
         return "United Kingdom";
-      case "UAE":
-        return "United Arab Emirates";
       case "Syria":
         return "Sy";
-      case "Russia":
-        return "Ru";
+
       case "S. Korea":
-        return "Kor";
+        return "South Korea";
       default:
         return c;
     }
   }
 
+  function toImg(name) {
+    const c = lookup.byCountry(render(name));
+    return c === null ? null : c.internet;
+  }
+
   const isPhone = window.matchMedia("(max-width : 480px)").matches;
   return (
     <div className="country_card">
-      <img
-        style={{
-          height: `${isPhone ? "40px" : "50px"}`,
-          width: `${isPhone ? "60px" : "80px"}`,
-          boxShadow: "1px 1px 2px black rgba(0,0,0,0.65)",
-          fontSize: "0.6em",
-          fontWeight: "500",
-        }}
-        src={`https://countryflagsapi.com/svg/${render(item.country_name)}`}
-        alt={`${item.country_name} flag`}
-      />
+      {toImg(item.country_name) && (
+        <Flag
+          countryCode={toImg(item.country_name)}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: `${isPhone ? "60px" : "80px"}`,
+            height: `${isPhone ? "40px" : "50px"}`,
+          }}
+          svg
+        />
+      )}
+      {!toImg(item.country_name) && (
+        <div
+          style={{
+            width: `${isPhone ? "60px" : "80px"}`,
+            height: `${isPhone ? "40px" : "50px"}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "0.8em",
+          }}
+        >
+          {item.country_name}
+        </div>
+      )}
     </div>
   );
 };

@@ -12,6 +12,7 @@ import Country from "./components/section/Country";
 import Location from "./components/section/Location";
 import ReportCovid from "./components/ReportCovid";
 import Notify from "./components/utils/Notify";
+import lookup from "country-code-lookup";
 import State from "./components/section/State";
 
 function App() {
